@@ -15,13 +15,14 @@ def gen_vcode(size=4):
 def send_sms(phone):
     params = config.YZX_PARAMS.copy()
     params['mobile'] = phone
-    vcode = keys.VCODE_KEY %(phone)
     params['param'] = gen_vcode()
     resp = requests.post(config.YZX_URL, json=params)
 
     if resp.status_code == 200:
         result = resp.json()
         if result['code'] == '000000':
-            return
+            return True, "OK"
+        else:
+            return False, result['msg']
     else:
         return '访问出错'
