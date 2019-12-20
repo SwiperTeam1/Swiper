@@ -6,6 +6,7 @@ from django.shortcuts import render
 from lib.http import render_json
 from lib.sms import send_sms
 from common import errors, keys
+from user.froms import ProfileModelForm
 from user.models import User
 
 
@@ -41,4 +42,15 @@ def get_profile(request):
         return render_json(code=errors.LOGIN_REQUIRED, data="请登录")
     user = User.objects.get(id=uid)
     return render_json(data=user.profile.to_dict())
+
+
+def edit_profile(request):
+    form = ProfileModelForm(request.POST)
+    if form.is_valid():
+        profile = form.save(commit=False)
+        uid = request.session.get('uid')
+        profile.id = uid
+        profile.save()
+        return render_json(data=profile.to_dict())
+    return render_json(code=errors.PROFILE_ERROR, data=form.errors)
 
