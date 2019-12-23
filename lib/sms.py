@@ -28,4 +28,4 @@ def send_sms(phone):
         else:
             return False, result['msg']
     else:
-        return '访问出错'
+        return False, '访问出错'
