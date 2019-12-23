@@ -60,5 +60,7 @@ def upload_avatar(request):
     avatar = request.FILES.get('avatar')
     print(avatar.name)
     print(avatar.size)
-    handle_upload
+    user = request.user
+    handle_upload.delay(user, avatar)
+    return render_json()
 

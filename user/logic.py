@@ -1,6 +1,9 @@
 import os
 
 from django.conf import settings
+
+from lib.qiniu import upload_qiniu
+from swiper import config
 from worker import celery_app
 
 from common import keys
